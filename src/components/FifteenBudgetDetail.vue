@@ -155,12 +155,12 @@ export default defineComponent({
     },
     compartirPorInstagram() {
       const mensaje = encodeURIComponent("¡Hola! Te comparto el presupuesto calculado: Total Presupuesto: $" + this.mostrarPresupuesto + " Precio Financiado: $" + this.mostrarPrecioFinanciado);
-      const url = "https://www.instagram.com/?text=" + mensaje;
+      const url = "instagram://direct?text=" + mensaje;
       window.open(url, '_blank');
     },
     compartirPorFacebookMessenger() {
       const mensaje = encodeURIComponent("¡Hola! Te comparto el presupuesto calculado: Total Presupuesto: $" + this.mostrarPresupuesto + " Precio Financiado: $" + this.mostrarPrecioFinanciado);
-      const url = "fb-messenger://share?text=" + mensaje;
+      const url = "fb-messenger://share?link=" + encodeURIComponent(window.location.href) + "&app_id=123456789&text=" + mensaje;
       window.open(url, '_blank');
     },
     compartirPorTelegram() {
