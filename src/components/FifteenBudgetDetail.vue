@@ -27,8 +27,8 @@
 
     <!-- Sección de Inflación Anual -->
     <div class="seccion-inflacion-anual">
-      <label>Inflación interanual </label>
-      <input v-model="inflacionAnual" type="number" /> %
+      <label>Inflación interanual %</label>
+      <input v-model="inflacionAnual" type="number" /> 
     </div>
 
     <!-- Sección de Items -->
@@ -232,15 +232,27 @@ export default defineComponent({
   color: #333;
 }
 
+/* Estilos para Inputs específicos */
+.seccion-precio input,
+.seccion-hora-extra input,
+.seccion-meses-proyeccion input,
+.seccion-inflacion-anual input {
+  width: 100%;
+  padding: 10px; /* Ajusta el padding según tus preferencias */
+  margin-bottom: 10px; /* Espaciado inferior */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px; /* Ajusta el tamaño de fuente según tus preferencias */
+}
+
 /* Ajustes para Dispositivos Móviles */
 @media screen and (max-width: 600px) {
-  .item-container {
-    flex-direction: column;
-  }
-
-  .horas-input {
-    width: 100%;
-    margin-right: 0;
+  .seccion-precio input,
+  .seccion-hora-extra input,
+  .seccion-meses-proyeccion input,
+  .seccion-inflacion-anual input {
+    margin-bottom: 15px; /* Añade más espacio inferior en dispositivos móviles */
   }
 }
 </style>
