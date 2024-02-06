@@ -62,6 +62,25 @@
       <p class="total-presupuesto">Total Presupuesto: $ {{ mostrarPresupuesto }}</p>
       <p class="precio-financiado">Precio Financiado: $ {{ mostrarPrecioFinanciado }}</p>
     </div>
+
+    <!--Compartir presupuesto -->
+    <div class="botones-container">
+    <h3 class="compartir-titulo">Compartir Presupuesto</h3>
+
+    <div class="botones-compartir">
+      <button class="facebook-button" @click="compartirPorFacebookMessenger"></button>
+
+      <button class="whatsapp-button" @click="compartirPorWhatsApp"></button>
+      
+      <button class="instagram-button" @click="compartirPorInstagram"></button>
+
+      <button class="telegram-button" @click="compartirPorTelegram"></button>
+
+      <button class="email-button" @click="compartirPorEmail"></button>
+    </div>
+  </div>
+
+
   </div>
 </template>
 
@@ -69,7 +88,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+
 export default defineComponent({
+
   data() {
     return {
       precioBase: 50000,
@@ -80,7 +101,7 @@ export default defineComponent({
       items: [
         { label: 'Fiesta', value: 'fiesta', horasTrabajadas: 9 },
         { label: 'Sesion de fotos / Book', value: 'segundoItem', horasTrabajadas: 2 },
-        { label: 'Pintada de calle/ Pancarta', value: 'tercerItem', horasTrabajadas: 2 },
+        { label: 'Pintada de calle / Pancarta', value: 'tercerItem', horasTrabajadas: 2 },
       ] as { label: string; value: string; horasTrabajadas: number }[],
     };
   },
@@ -125,6 +146,33 @@ export default defineComponent({
       } else {
         return '0.00';
       }
+    },
+
+    compartirPorWhatsApp() {
+      const mensaje = encodeURIComponent("¡Hola! Te comparto el presupuesto calculado: Total Presupuesto: $" + this.mostrarPresupuesto + " Precio Financiado: $" + this.mostrarPrecioFinanciado);
+      const url = "https://wa.me/?text=" + mensaje;
+      window.open(url, '_blank');
+    },
+    compartirPorInstagram() {
+      const mensaje = encodeURIComponent("¡Hola! Te comparto el presupuesto calculado: Total Presupuesto: $" + this.mostrarPresupuesto + " Precio Financiado: $" + this.mostrarPrecioFinanciado);
+      const url = "https://www.instagram.com/?text=" + mensaje;
+      window.open(url, '_blank');
+    },
+    compartirPorFacebookMessenger() {
+      const mensaje = encodeURIComponent("¡Hola! Te comparto el presupuesto calculado: Total Presupuesto: $" + this.mostrarPresupuesto + " Precio Financiado: $" + this.mostrarPrecioFinanciado);
+      const url = "fb-messenger://share?text=" + mensaje;
+      window.open(url, '_blank');
+    },
+    compartirPorTelegram() {
+      const mensaje = encodeURIComponent("¡Hola! Te comparto el presupuesto calculado: Total Presupuesto: $" + this.mostrarPresupuesto + " Precio Financiado: $" + this.mostrarPrecioFinanciado);
+      const url = "https://t.me/share/url?url=&text=" + mensaje;
+      window.open(url, '_blank');
+    },
+    compartirPorEmail() {
+      const asunto = encodeURIComponent("Presupuesto Compartido");
+      const cuerpo = encodeURIComponent("¡Hola! Te comparto el presupuesto calculado: Total Presupuesto: $" + this.mostrarPresupuesto + " Precio Financiado: $" + this.mostrarPrecioFinanciado);
+      const url = "mailto:?subject=" + asunto + "&body=" + cuerpo;
+      window.open(url, '_blank');
     },
   },
 
@@ -255,4 +303,59 @@ export default defineComponent({
     margin-bottom: 15px; /* Añade más espacio inferior en dispositivos móviles */
   }
 }
+
+/* Estilos para los botones de compartir */
+
+
+.botones-container {
+  text-align: center; /* Centra los elementos */
+}
+
+.compartir-titulo {
+  margin-bottom: 10px; /* Espacio inferior */
+}
+
+.botones-compartir {
+  display: inline-block; /* Alinea los botones en línea */
+}
+
+.botones-compartir button {
+  width: 50px; /* Ancho del botón */
+  height: 50px; /* Altura del botón */
+  margin: 0 10px; /* Espacio horizontal entre botones */
+  display: inline-block;
+  background-size: cover; /* Ajusta el tamaño de la imagen */
+  background-repeat: no-repeat; /* Evita la repetición de la imagen */
+  border: none; /* Elimina el borde del botón */
+  border-radius: 50%; /* Forma redondeada */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  transition: background-color 0.3s; /* Transición para el efecto hover */
+}
+
+.botones-compartir button:hover {
+  background-color: #ccc; /* Cambia el color al pasar el cursor por encima */
+}
+
+.facebook-button {
+  background-image: url('https://e7.pngegg.com/pngimages/335/1001/png-clipart-social-media-facebook-computer-icons-social-network-linkedin-text-logo-internet.png');
+}
+
+.whatsapp-button {
+  background-image: url('https://e7.pngegg.com/pngimages/347/373/png-clipart-computer-icons-whatsapp-whatsapp-text-trademark-thumbnail.png');
+}
+
+.instagram-button {
+  background-image: url('https://e7.pngegg.com/pngimages/722/1011/png-clipart-logo-icon-instagram-logo-instagram-logo-purple-violet-thumbnail.png');
+}
+
+.telegram-button {
+  background-image: url('https://e7.pngegg.com/pngimages/402/10/png-clipart-telegram-logo-scalable-graphics-icon-logo-blue-angle-thumbnail.png');
+}
+
+.email-button {
+  background-image: url('https://e7.pngegg.com/pngimages/191/108/png-clipart-computer-icons-email-email-miscellaneous-blue-thumbnail.png');
+}
+
+
+
 </style>
