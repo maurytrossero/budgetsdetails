@@ -5,7 +5,7 @@
       <img src="https://scontent.fcor3-1.fna.fbcdn.net/v/t39.30808-6/326524611_1565285560665566_1754105422097280677_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=wePk7zgEIvkAX-WLH9L&_nc_ht=scontent.fcor3-1.fna&cb_e2o_trans=q&oh=00_AfBl6DQYV-eNFhNTzONvKfO6tB7QZEVCLJ3PUg5OHjI31w&oe=65C63DDB" alt="Logo" class="logo-image" />
     </div>
 
-    <h1 class="titulo">Calculador de Presupuestos</h1>
+    <h1 class="titulo">Calculador de Presupuesto para Fiesta de 15</h1>
 
     <!-- Sección de Precio Base -->
     <div class="seccion-precio">
@@ -167,6 +167,7 @@ export default defineComponent({
       const mensaje = encodeURIComponent("¡Hola! Te comparto el presupuesto calculado: Total Presupuesto: $" + this.mostrarPresupuesto + " Precio Financiado: $" + this.mostrarPrecioFinanciado);
       const url = "https://t.me/share/url?url=&text=" + mensaje;
       window.open(url, '_blank');
+
     },
     compartirPorEmail() {
       const asunto = encodeURIComponent("Presupuesto Compartido");
