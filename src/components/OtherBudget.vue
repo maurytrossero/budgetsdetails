@@ -1,6 +1,7 @@
 <template>
     <div class="presupuesto-container">
-      <h1 class="titulo">Calculador de Presupuesto para Bodas</h1>
+      
+      <h1 class="titulo">Calculador de Presupuesto personalizado</h1>
   
       <!-- Sección de Precio Base -->
       <div class="seccion-precio">
@@ -25,32 +26,37 @@
         <label>Inflación interanual %</label>
         <input v-model="inflacionAnual" type="number" /> 
       </div>
-  
-      <!-- Sección de Items -->
-      <div class="seccion-items">
-        <label class="subtitulo">Selecciona los Items</label>
-        <div v-for="item in items" :key="item.value" class="item-container">
-          <input
-            type="checkbox"
-            :id="item.value"
-            :value="item.value"
-            v-model="selectedItems"
-          />
-          <label :for="item.value" class="item-label">{{ item.label }}</label>
-          <input
-            type="number"
-            :id="item.value + 'Horas'"
-            v-model="item.horasTrabajadas"
-            :disabled="!selectedItems.includes(item.value)"
-            class="horas-input"
-          />
-          <label :for="item.value + 'Horas'" class="item-label">Horas Trabajadas</label>
-          <p v-if="selectedItems.includes(item.value)" class="costo-text">
-            Costo {{ item.label }}: $ {{ calcularCostoItem(item) }}
-          </p>
-        </div>
-      </div>
-  
+  <!-- Sección de Items -->
+<div class="seccion-items">
+  <label class="subtitulo">Selecciona los Items</label>
+  <div v-for="(item, index) in items" :key="index" class="item-container">
+    <div class="item">
+      <input
+        type="checkbox"
+        :id="item.value"
+        :value="item.value"
+        v-model="selectedItems"
+      />
+      <label :for="item.value" class="item-label">{{ item.label }}</label>
+      <p v-if="selectedItems.includes(item.value)" class="costo-text">
+        Costo {{ item.label }}: $ {{ calcularCostoItem(item) }}
+      </p>
+    </div>
+    <!-- Botón para agregar/quitar el ítem -->
+    <button class="accion-item" @click="toggleItem(item.value)">
+      {{ selectedItems.includes(item.value) ? 'Quitar Ítem' : 'Agregar Ítem' }}
+    </button>
+  </div>
+</div>
+
+<!-- Botón para agregar ítem -->
+<div class="botones-agregar">
+  <input v-model="selectedItemToAdd" type="text" placeholder="Ingrese el nuevo ítem">
+  <button @click="agregarItem">Agregar Ítem</button>
+</div>
+
+
+
       <!-- Resultados -->
       <div class="resultados">
         <h2 class="subtitulo">Resultado del Presupuesto</h2>
@@ -78,24 +84,21 @@
   
     </div>
   </template>
-  
-  <script lang="ts">
+
+<script lang="ts">
   import { defineComponent } from 'vue';
   
-  
   export default defineComponent({
-  
     data() {
       return {
         precioBase: 50000,
         costoHoraExtra: 14000,
         mesesProyectados: 1,
-        inflacionAnual: 255,
+        inflacionAnual: 220,
+        selectedItemToAdd: '', // Agrega esta línea
         selectedItems: [] as string[],
         items: [
-          { label: 'Previa / Ceremonia Religiosa / Fiesta ', value: 'fiesta', horasTrabajadas: 9 },
-          { label: 'Sesion de fotos / Book ', value: 'segundoItem', horasTrabajadas: 2 },
-          { label: 'Ceremonia civil ', value: 'tercerItem', horasTrabajadas: 2 },
+          { label: 'Jornada', value: 'fiesta', horasTrabajadas: 9 },
         ] as { label: string; value: string; horasTrabajadas: number }[],
       };
     },
@@ -161,13 +164,42 @@
         const mensaje = encodeURIComponent("¡Hola! Te comparto el presupuesto calculado: Total Presupuesto: $" + this.mostrarPresupuesto + " Precio Financiado: $" + this.mostrarPrecioFinanciado);
         const url = "https://t.me/share/url?url=&text=" + mensaje;
         window.open(url, '_blank');
-        
+  
       },
       compartirPorEmail() {
         const asunto = encodeURIComponent("Presupuesto Compartido");
         const cuerpo = encodeURIComponent("¡Hola! Te comparto el presupuesto calculado: Total Presupuesto: $" + this.mostrarPresupuesto + " Precio Financiado: $" + this.mostrarPrecioFinanciado);
         const url = "mailto:?subject=" + asunto + "&body=" + cuerpo;
         window.open(url, '_blank');
+      },
+      agregarItem() {
+        if (this.selectedItemToAdd) {
+            // Agregar el nuevo ítem solo si no está ya en la lista
+            if (!this.selectedItems.includes(this.selectedItemToAdd)) {
+                this.selectedItems.push(this.selectedItemToAdd);
+            }
+            // Limpiar el valor del ítem seleccionado para agregar
+            this.selectedItemToAdd = '';
+
+            // Recalcular el presupuesto total y actualizar los resultados
+            this.calcularPresupuestoTotal();
+        }
+      },
+      toggleItem(value: string): void {
+        const index = this.selectedItems.indexOf(value);
+        if (index !== -1) {
+          this.selectedItems.splice(index, 1); // Quitar el ítem si ya está seleccionado
+        } else {
+          this.selectedItems.push(value); // Agregar el ítem si no está seleccionado
+        }
+      },
+
+
+      quitarItem(index: number) {
+          this.selectedItems.splice(index, 1);
+
+          // Recalcular el presupuesto total y actualizar los resultados
+          this.calcularPresupuestoTotal();
       },
     },
   
@@ -182,7 +214,9 @@
       },
     },
   });
-  </script>
+</script>
+
+
   
   
   
@@ -196,7 +230,6 @@
     background-color: #f5f5f5;
   }
   
-  /* Contenedor de la imagen */
   /* Contenedor de la imagen */
   .logo-container {
     width: 100px; /* Ajusta el tamaño del contenedor según tus necesidades */
@@ -351,6 +384,36 @@
     background-image: url('https://e7.pngegg.com/pngimages/191/108/png-clipart-computer-icons-email-email-miscellaneous-blue-thumbnail.png');
   }
   
-  
+  /* Estilos para el botón de agregar ítem */
+.botones-agregar button {
+  padding: 10px 20px; /* Ajusta el padding según tus preferencias */
+  background-color: #007bff; /* Color de fondo del botón */
+  color: #fff; /* Color del texto del botón */
+  border: none; /* Elimina el borde del botón */
+  border-radius: 4px; /* Borde redondeado */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  transition: background-color 0.3s; /* Transición para el efecto hover */
+}
+
+.botones-agregar button:hover {
+  background-color: #0056b3; /* Cambia el color al pasar el cursor por encima */
+}
+
+/* Estilos para el botón de quitar ítem */
+.quitar-item {
+  padding: 8px 16px; /* Ajusta el padding según tus preferencias */
+  background-color: #dc3545; /* Color de fondo del botón */
+  color: #fff; /* Color del texto del botón */
+  border: none; /* Elimina el borde del botón */
+  border-radius: 4px; /* Borde redondeado */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  transition: background-color 0.3s; /* Transición para el efecto hover */
+}
+
+.quitar-item:hover {
+  background-color: #bd2130; /* Cambia el color al pasar el cursor por encima */
+}
+
   
   </style>
+  

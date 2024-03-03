@@ -7,7 +7,7 @@
 
     <!-- Contenido de tu aplicación aquí -->  
     <div class="container">
-    <h1>Producción de Video Profesional</h1>
+    <h1>Producción de Foto  / Video Profesional</h1>
 
     <div class="select-container">
       <label for="service-select">Selecciona un Servicio:</label>
@@ -15,13 +15,16 @@
         <option value="fifteen">Producción de Video para Fiestas de 15</option>
         <option value="wedding">Producción de Video para Bodas</option>
         <option value="prom">Producción de Video para Egresados</option>
+        <option value="other">Presupuesto Personalizado</option>
+
       </select>
     </div>
 
     <div class="form-container">
       <component :is="selectedOption === 'fifteen' ? FifteenBudgetDetail : 
                    selectedOption === 'wedding' ? WeddingBudgetDetail : 
-                   selectedOption === 'prom' ? PromBudgetDetail : null" />
+                   selectedOption === 'prom' ? PromBudgetDetail : 
+                   selectedOption === 'other' ? OtherBudgetDetail : null" />
     </div>
   </div>
   </div>
@@ -33,6 +36,8 @@ import { ref } from 'vue';
 import FifteenBudgetDetail from './components/FifteenBudgetDetail.vue';
 import WeddingBudgetDetail from './components/WeddingBudgetDetail.vue';
 import PromBudgetDetail from './components/PromBudgetDetail.vue';
+import OtherBudgetDetail from './components/OtherBudget.vue'; // Importar el componente OtherBudget.vue
+
 
 const selectedOption = ref('fifteen'); // Opción seleccionada por defecto
 
