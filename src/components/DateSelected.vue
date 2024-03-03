@@ -31,7 +31,10 @@ export default defineComponent({
       }
     };
 
-    watch(selectedDate, calculateMonthsRemaining);
+    watch(selectedDate, (newValue: Date | undefined, oldValue: Date | undefined) => {
+      calculateMonthsRemaining(newValue);
+    });
+
 
     const options = {
       format: 'yyyy-MM-dd',
