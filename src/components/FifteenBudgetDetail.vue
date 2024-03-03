@@ -15,8 +15,12 @@
       <input v-model="costoHoraExtra" type="number" />
     </div>
 
+
     <!-- Sección de Meses de Proyección -->
     <div class="seccion-meses-proyeccion">
+      <label for="service-select">Fecha del evento:</label>
+      <DateSelected @updateMonthsRemaining="handleUpdateMonthsRemaining" />
+      <br>
       <label>Cantidad de meses para el evento </label>
       <input v-model="mesesProyectados" type="number" />
     </div>
@@ -56,7 +60,7 @@
     <div class="resultados">
       <h2 class="subtitulo">Resultado del Presupuesto</h2>
       <p class="total-presupuesto">Total Presupuesto: $ {{ mostrarPresupuesto }}</p>
-      <p class="precio-financiado">Precio Financiado: $ {{ mostrarPrecioFinanciado }}</p>
+      <p v-if="mesesProyectados >= 1" class="precio-financiado">Precio Financiado {{ mesesProyectados }} meses: $ {{ mostrarPrecioFinanciado }}</p>
     </div>
 
     <!--Compartir presupuesto -->
@@ -83,15 +87,17 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-
+import DateSelected from './DateSelected.vue';
 
 export default defineComponent({
-
+  components: {
+    DateSelected
+  },
   data() {
     return {
       precioBase: 50000,
       costoHoraExtra: 14000,
-      mesesProyectados: 1,
+      mesesProyectados: 0,
       inflacionAnual: 255,
       selectedItems: [] as string[],
       items: [
@@ -171,6 +177,13 @@ export default defineComponent({
       const url = "mailto:?subject=" + asunto + "&body=" + cuerpo;
       window.open(url, '_blank');
     },
+    handleUpdateMonthsRemaining(...args: unknown[]): void {
+      const monthsRemaining = args[0] as number;
+      // Aquí puedes realizar cualquier lógica adicional, como validar el valor recibido
+      // y luego actualizar el estado o realizar otras acciones según sea necesario.
+      this.mesesProyectados = monthsRemaining;
+    },
+    
   },
 
   computed: {
